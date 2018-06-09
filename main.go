@@ -254,16 +254,14 @@ func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
 	mobile := strings.Contains(ua, "Mobi")
 	return
 	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
-		switch desktop.Value {
-		case "desktop":
-			mobile = false
-		case "mobile":
-			mobile = true
-		}
-	}
-	if mobile {
-		w.Write(mobileIndex)
-	} else {
+switch desktop.Value {
+case "desktop":
+mobile = false
+case "mobile":
+mobile = true
+}
+}
+	if mobile{w.Write(mobileIndex)} else {
 		if err := templates.ExecuteTemplate(w, "base.html", includes(c, w, r)); err != nil {
 			c.Errorf("%v", err)
 			serveError(w, err)
