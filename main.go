@@ -34,6 +34,25 @@ import (
 
 	"appengine"
 	"appengine/datastore"
+	
+	
+		"encoding/json"
+	"fmt"
+	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
+	"github.com/mjibson/goread/_third_party/github.com/MiniProfiler/go/miniprofiler"
+	mpg "github.com/mjibson/goread/_third_party/github.com/MiniProfiler/go/miniprofiler_gae"
+	"github.com/mjibson/goread/_third_party/github.com/gorilla/mux"
+	"github.com/mjibson/goread/_third_party/github.com/mjibson/goon"
+
+	"appengine"
+	"appengine/datastore"
 )
 
 var (
@@ -65,6 +84,29 @@ func init() {
 	miniprofiler.ToggleShortcut = "Alt+C"
 	miniprofiler.Position = "bottomleft"
 }
+
+func init() {
+	var err error
+	if templates, err = template.New("").Funcs(funcs).
+		ParseFiles(
+			"templates/base.html",
+			"templates/admin-all-feeds.html",
+			"templates/admin-date-formats.html",
+			"templates/admin-feed.html",
+			"templates/admin-stats.html",
+			"templates/admin-user.html",
+		); err != nil {
+		log.Fatal(err)
+	}
+	mobileIndex, err = ioutil.ReadFile("static/index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	miniprofiler.ToggleShortcut = "Alt+C"
+	miniprofiler.Position = "bottomleft"
+}
+
 
 func RegisterHandlers(r *mux.Router) {
 	router = r
