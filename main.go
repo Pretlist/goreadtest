@@ -160,26 +160,6 @@ func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
-	ua := r.Header.Get("User-Agent")
-	mobile := strings.Contains(ua, "Mobi")
-	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
-		switch desktop.Value {
-		case "desktop":
-			mobile = false
-		case "mobile":
-			mobile = true
-		}
-	}
-	if mobile {
-		w.Write(mobileIndex)
-	} else {
-		if err := templates.ExecuteTemplate(w, "base.html", includes(c, w, r)); err != nil {
-			c.Errorf("%v", err)
-			serveError(w, err)
-		}
-	}
-}
 
 func addFeed(c mpg.Context, userid string, outline *OpmlOutline) error {
 	gn := goon.FromContext(c)
