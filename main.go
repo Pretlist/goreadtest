@@ -63,6 +63,19 @@ var (
 	mobileIndex []byte
 )
 
+var (
+	router      = new(mux.Router)
+	router2      = new(mux.Router)
+	templates   *template.Template
+	templates2   *template.Template
+	mobileIndex []byte
+)
+
+
+
+
+
+
 func init() {
 	var err error
 	if templates, err = template.New("").Funcs(funcs).
@@ -294,6 +307,9 @@ func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
+		for {
+	}
+	
 	ua := r.Header.Get("User-Agent")
 	mobile := strings.Contains(ua, "Mobi")
 	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
