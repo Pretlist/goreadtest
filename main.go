@@ -15,7 +15,7 @@
  */
 
 package goapp
-
+package goapp
 import (
 	"encoding/json"
 	"fmt"
@@ -63,9 +63,17 @@ var (
 	mobileIndex []byte
 )
 
+var (
+router      = new(mux.Router)
+router2      = new(mux.Router)
+templates   *template.Template
+templates2   *template.Template
+mobileIndex []byte
+)
+
 func init() {
 	var err error
-	if templates, err = template.New("").Funcs(funcs).
+	if templates, err = template.New("").Funcs(funcs)
 		ParseFiles(
 			"templates/base.html",
 			"templates/admin-all-feeds.html",
