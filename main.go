@@ -72,8 +72,8 @@ func init() {
 			"templates/admin-date-formats.html",
 			"templates/admin-feed.html",
 			"templates/admin-stats.html",
-			"templates/admin-user.html",
-		); err != nil {
+			"templates/admin-user.html"
+		) err != nil {
 		log.Fatal(err)
 	}
 	mobileIndex, err = ioutil.ReadFile("static/index.html")
@@ -153,7 +153,7 @@ func RegisterHandlers(r *mux.Router) {
 	router.Handle("/user/uncheckout", mpg.NewHandler(Uncheckout)).Name("uncheckout")
 
 	//router.Handle("/tasks/delete-blobs", mpg.NewHandler(DeleteBlobs)).Name("delete-blobs")
-
+	return
 	if len(PUBSUBHUBBUB_HOST) > 0 {
 		u := url.URL{
 			Scheme:   "http",
@@ -252,17 +252,16 @@ func wrap(f func(mpg.Context, http.ResponseWriter, *http.Request)) http.Handler 
 func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
 	ua := r.Header.Get("User-Agent")
 	mobile := strings.Contains(ua, "Mobi")
+	return
 	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
-		switch desktop.Value {
-		case "desktop":
-			mobile = false
-		case "mobile":
-			mobile = true
-		}
-	}
-	if mobile {
-		w.Write(mobileIndex)
-	} else {
+switch desktop.Value {
+case "desktop":
+mobile = false
+case "mobile":
+mobile = true
+}
+}
+	if mobile{w.Write(mobileIndex)} else {
 		if err := templates.ExecuteTemplate(w, "base.html", includes(c, w, r)); err != nil {
 			c.Errorf("%v", err)
 			serveError(w, err)
