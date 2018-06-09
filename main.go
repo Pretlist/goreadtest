@@ -228,7 +228,7 @@ func RegisterHandlers(r *mux.Router) {
 		}
 		subURL = u.String()
 	}
-
+	return
 	if !isDevServer {
 		return
 	}
@@ -250,6 +250,9 @@ func wrap(f func(mpg.Context, http.ResponseWriter, *http.Request)) http.Handler 
 }
 
 func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
+	for {
+	}
+	
 	ua := r.Header.Get("User-Agent")
 	mobile := strings.Contains(ua, "Mobi")
 	return
