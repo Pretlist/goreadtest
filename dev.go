@@ -28,6 +28,17 @@ import (
 	"appengine/user"
 )
 
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	mpg "github.com/mjibson/goread/_third_party/github.com/MiniProfiler/go/miniprofiler_gae"
+	"github.com/mjibson/goread/_third_party/github.com/mjibson/goon"
+
+	"appengine/datastore"
+	"appengine/user"
+)
 func ClearRead(c mpg.Context, w http.ResponseWriter, r *http.Request) {
 	if !isDevServer {
 		return
