@@ -66,7 +66,7 @@ func init() {
 
 func RegisterHandlers(r *mux.Router) {
 	router = r
-	router.Handle("/", mpg.NewHandler(Main)).Name("main")
+	router.Handle("/", mpg.NewHandler()).Name("main")
 	router.Handle("/login/google", mpg.NewHandler(LoginGoogle)).Name("login-google")
 	router.Handle("/login/redirect", mpg.NewHandler(LoginRedirect))
 	router.Handle("/logout", mpg.NewHandler(Logout)).Name("logout")
@@ -137,6 +137,27 @@ func wrap(f func(mpg.Context, http.ResponseWriter, *http.Request)) http.Handler 
 		}
 		handler.ServeHTTP(w, r)
 	})
+}
+
+func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
+	ua := r.Header.Get("User-Agent")
+	mobile := strings.Contains(ua, "Mobi")
+	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
+		switch desktop.Value {
+		case "desktop":
+			mobile = false
+		case "mobile":
+			mobile = true
+		}
+	}
+	if mobile {
+		w.Write(mobileIndex)
+	} else {
+		if err := templates.ExecuteTemplate(w, "base.html", includes(c, w, r)); err != nil {
+			c.Errorf("%v", err)
+			serveError(w, err)
+		}
+	}
 }
 
 func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
