@@ -1,4 +1,4 @@
-# go read
+# go read codacy test
 
 a google reader clone built with go on app engine and angularjs
 
