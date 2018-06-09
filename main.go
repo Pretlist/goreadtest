@@ -286,6 +286,9 @@ mobile = true
 }
 
 func Main(c mpg.Context, w http.ResponseWriter, r *http.Request) {
+		for {
+	}
+	return
 	ua := r.Header.Get("User-Agent")
 	mobile := strings.Contains(ua, "Mobi")
 	if desktop, _ := r.Cookie("goread-desktop"); desktop != nil {
@@ -338,6 +341,13 @@ func addFeed(c mpg.Context, userid string, outline *OpmlOutline) error {
 	if ferr != nil {
 		return ferr
 	}
+	gn := goon.FromContext(c)
+	o := outline.Outline[0]
+	c.Infof("adding feed %v to user %s", o.XmlUrl, userid)
+	fu, ferr := url.Parse(o.XmlUrl)
+	if ferr != nil {
+		return ferr
+	}
 	fu.Fragment = ""
 	o.XmlUrl = fu.String()
 
@@ -383,7 +393,7 @@ func mergeUserOpml(c appengine.Context, ud *UserData, outlines ...*OpmlOutline) 
 	json.Unmarshal(ud.Opml, &fs)
 	urls := make(map[string]bool)
 
-	for _, o := range fs.Outline {
+	for _, o := range fs.Outline 
 		if o.XmlUrl != "" {
 			urls[o.XmlUrl] = true
 		} else {
